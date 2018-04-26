@@ -131,7 +131,7 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 
 
-#### 1.4. 数据格式内容备注
+### 1.4. 数据格式内容备注
 
 由于MATLAB中`cell`类型的数据占内存太大，我的PC机不能处理，所以使用`table`类型的数据。因为matlab中不支持中文作为列名，所以在列名分别为：
 
@@ -149,24 +149,46 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 特此记录，以备后用。
 
+
+
 # 2018.4.25 把提取的数据进行预处理
 
-数据量比较多，优先提取出软长嘴和软红长嘴。提取的方法：
-
-输出预处理的环节，大致思路：
+数据量比较多，优先提取15年7月的出软长嘴。提取的方法：
 
 
 
+首先，通过对excel文件的研究，发现如下规律：一次加料，二次加料，
 
 
 
+# 2018.4.26 预处理MATLAB代码的编写
+
+首先，尝试使用自己编的函数来遍历。最后发现效率太低，遂学习MATLAB自带函数，尝试使用它的函数来进行编程，同时学习table数据变量的用法。
+
+## 1. excel文件的熟悉
+
+假设原`1 生产过程统计数据`的工单号是连续的（即中间没有断开）（事实上检测了数个工单，并没有发现太大违背假设的情况，以后如果出现例外，再进行处理），继续进行处理。
+
+1. A线一次加料34行，B线一次加料52行，C线一次加料40行，推测共52+个变量。
+2. ​
+
+
+
+目前打算的做法是，列出所有可以检测的变量（一次加料，二次加料，烘丝），生成一个`cell`类型存放 `1 - ?`  所对应的变量。
+
+如何找到所有的变量？学习使用MATLAB内部的去重函数，然后统计有多少个对应的变量，按照
+
+> 一次 --> 二次 --> 烘丝
+
+的顺序来生成`cell`数组。最后建立变量数目的一个table，存放预处理之后的变量。
 
 
 
 # 参考文档：
 
 1. [MATLAB official document - table2cell](https://ww2.mathworks.cn/help/matlab/ref/table2cell.html)
-2. ​
+2. [MATLAB新的统计数据类型Table](https://blog.csdn.net/rumswell/article/details/49401913)
+3. [MATLAB official documentation - table](https://ww2.mathworks.cn/help/matlab/matlab_prog/create-a-table.html)
 
 
 
