@@ -1,9 +1,4 @@
 /.idea
 /venv/
-/data_and_files/StatisticsInProduction.xlsx
-/data_and_files/CuttobaccoTest.xlsx
-/data_and_files/LeafTest.xlsx
-/data_and_files/raw_stats.mat
-/data_and_files/Relationships.xlsx
-/data_and_files/Notification.doc
-.xlsx
+/data_and_files/data_and_files/
+/data_and_files/.mat
