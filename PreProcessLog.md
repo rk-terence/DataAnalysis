@@ -169,18 +169,16 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 假设原`1 生产过程统计数据`的工单号是连续的（即中间没有断开）（事实上检测了数个工单，并没有发现太大违背假设的情况，以后如果出现例外，再进行处理），继续进行处理。
 
-1. A线一次加料34行，B线一次加料52行，C线一次加料40行，推测共52+个变量。
-2. ​
+在研究`1 生产过程统计数据`之后，发现不同工单号对应的检测变量并没有特定的规律。具体体现在：
+
+> 有的一次加料34个变量，有的一次加料一次加料52个变量，有的一次加料40个变量，变量个数完全不统一
 
 
+目前的解决做法是，列出所有可以检测的变量（17年1月），生成一个`string array`类型存放 `1 - ?`  所对应的变量。然后进行数据提取到另一个table的环节的时候，按照`string array`表的对应关系，一个批次号一个批次号地填入。
 
-目前打算的做法是，列出所有可以检测的变量（一次加料，二次加料，烘丝），生成一个`cell`类型存放 `1 - ?`  所对应的变量。
+如何找到所有的变量？利用MATLAB内部的去重函数`unique`，统计有多少个对应的变量。`unique`函数会自动帮我们把对应的`string array`排序。
 
-如何找到所有的变量？学习使用MATLAB内部的去重函数，然后统计有多少个对应的变量，按照
 
-> 一次 --> 二次 --> 烘丝
-
-的顺序来生成`cell`数组。最后建立变量数目的一个table，存放预处理之后的变量。
 
 
 
@@ -189,6 +187,8 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 1. [MATLAB official document - table2cell](https://ww2.mathworks.cn/help/matlab/ref/table2cell.html)
 2. [MATLAB新的统计数据类型Table](https://blog.csdn.net/rumswell/article/details/49401913)
 3. [MATLAB official documentation - table](https://ww2.mathworks.cn/help/matlab/matlab_prog/create-a-table.html)
+4. [MATLAB table常用操作](http://www.ilovematlab.cn/article-53-1.html#table_find)
+5. ​
 
 
 

@@ -1,16 +1,16 @@
-function xy_stats = PreProcessData_Beta(month, year, raw_data)
+function [xy_stats, variables] = PreProcessData_Beta(month, year, raw_data)
 %本脚本可以把中某一个月的原始数据按照x-y的关系生成一个新的table表格。
 %（然后保存到一个.csv或者excel文件中（以可以方便之后的为准））。
 %
 %输入参数：两个数字，一个raw_data。其中，年份是两位数字，如17，raw_data如raw_171。
 %建议使用本函数之前clear一下变量空间，防止干扰，产生意想不到的结果
-%版本：0.9 （目前还不能导入测试值）
+%版本：1.1
 
 %% 读取需要使用的数据（从文件中）
 load raw_stats.mat relationship raw_fillsi raw_longsi raw_midsi raw_shortsi raw_brokensi raw_completesi raw_bigleaf raw_bmleaf raw_midleaf raw_brokenleaf; 
 %% 常数性变量。
 variables = unique(raw_data.Varname);
-
+%save(%得到本月有的所有的变量。并输出，便于后续处理。
 %得到 string monthyear，为之后的查找做准备（table T的处理）
 if month <= 9
     monthyear = "20" + string(year) + "0" + string(month);
@@ -18,12 +18,12 @@ else
     monthyear = "20" + string(year) + string(month);
 end
 
-%save('17年1月所有变量对应表','variables')%得到本月有的所有的变量。并输出，便于后续处理。
+
 
 po_array = relationship.Productionorder;
 po_array = char(po_array);
 po_array = po_array(:,1:6);
-po_array = string(po_array);%把time_array变成一个仅有年、月的string array
+po_array = string(po_array);%把po_array变成一个仅有年、月的string array
 
 %下面的代码块可以获得绝大部分生产批次在特定时间的批次号。
 startrow = find(po_array==monthyear, 1, 'first');
@@ -32,7 +32,7 @@ T = relationship(startrow:endrow,:);
 %删除T中的有关X、Y工序（这两个工序不做研究）的批次
 po_array = T.Productionorder;
 po_array = char(po_array);
-po_array = po_array(:,9);%把time_array变成一个仅有年、月的string array
+po_array = po_array(:,9);%把po_array变成一个仅有一个字母的char array
 rows = [find(po_array=='X');
         find(po_array=='Y')];
 T(rows,:) = [];%删除操作
@@ -140,6 +140,5 @@ end
         
 %% 对xy_stats进行最后的操作，polishing
 xy_stats = xy_stats(:, [length(variables)+1, length(variables)+2, 1:length(variables), length(variables)+3:length(variables)+12]);
-
 %% 保存得到的table到文件
 

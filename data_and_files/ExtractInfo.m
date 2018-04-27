@@ -1,6 +1,5 @@
-% Read the information of the statistics in production
+%% 提取生产过程的数据
 filename = "StatisticsInProduction.xlsx";
-
 for i = 1:24
     sheetname = GenSheetname(i);
     xls = xlsread(filename,sheetname);
@@ -14,10 +13,24 @@ for i = 1:24
             varname = "17" + string(i - 18);
         end
     end
-    eval('raw_' + varname + ' = ' + 'importfilefromexcel1(filename, sheetname, 2, endrow);');
+    eval('raw_' + varname + ' = ' + 'importfilefromexcel(filename, sheetname, 2, endrow);');
 end
 
-%Read the information of test statistics of Leaves.
+% 更改列名称
+for i = 1:24
+    if i <= 6
+        varname = "15" + string(i + 6);            
+    else
+        if i <= 18
+            varname = "16" + string(i - 6);
+        else
+            varname = "17" + string(i - 18);
+        end
+    end
+    eval('raw_' + varname + ".Properties.VariableNames = {'Number', 'Workorder', 'Date', 'Max', 'Min', 'Average', 'SD', 'CPK', 'Confidence', 'Varname', 'Segment', 'Category'};");
+end 
+
+%% 提取制叶段的测试结果
 filename = "LeafTest.xlsx";
 
 xls = xlsread(filename,"大片率");
@@ -36,8 +49,13 @@ xls = xlsread(filename,"碎片率");
 endrow = length(xls) + 2;
 raw_brokenleaf = importfilefromexcel2(filename, "碎片率", 3, endrow);
 
+%更改列名称
+raw_bigleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_bmleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_midleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_brokenleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 
-%Read the information of test statistics of Cut tobaccos.
+%% 提取制丝段的测试结果
 filename = "CuttobaccoTest.xlsx";
 
 xls = xlsread(filename, "长丝率");
@@ -60,6 +78,16 @@ xls = xlsread(filename, "碎丝率");
 endrow = length(xls) + 2;
 raw_brokensi = importfilefromexcel3(filename, "碎丝率", 3, endrow);
 
-xls = xlsread(filename, "填充值（Y）");
+xls = xlsread(filename, "填充值");
 endrow = length(xls) + 2;
-raw_fillsi = importfilefromexcel3(filename, "填充值（Y）", 3, endrow);
+raw_fillsi = importfilefromexcel3(filename, "填充值", 3, endrow);
+
+
+%更改列名称
+raw_fillsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_longsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_shortsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_midsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_completesi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+raw_brokensi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
+
