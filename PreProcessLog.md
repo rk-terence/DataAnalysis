@@ -1,14 +1,14 @@
-# 2018.4.24 数据提取环节
+本周，本团队主要着手进行数据清洗。经过与李泽华学长的沟通，我们认识到了自己上周所做的内容偏离了增长的轨道。这周重回正轨，着手把数据从原始数据变为以生产批次号为标示的`X-Y`型数据。
 
-今天进行数据的预处理。
+# 1. 数据提取环节
+
+进行数据处理，首先需要把excel文件中的数据提取到数据处理的工具里面去。
 
 预定使用的软件为Matlab R2017b。准备先把各个sheet导入到Matlab的变量里面，然后再对这些变量写特定的程序脚本来处理。
 
-## 1. excel中数据的提取
-
 数据的提取分为两个部分，一个是生产过程中的数据，一个是过程检验数据。为了制成excel表格，我们需要对数据进行提取。
 
-### 1.1. 生产过程数据的提取
+## 1.1. 生产过程数据的提取
 
 使用如下的代码把`1 生产过程统计数据.xlsx` 中的内容提取到matlab的工作变量中：
 
@@ -180,7 +180,7 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 成功提取之后，将其保存为`.matlab`文件，方便之后的读取，从此就可以摆脱excel，直接在Matlab上面进行数据处理了。
 
-### 1.2. 过程检验数据的提取
+## 1.2. 过程检验数据的提取
 
 过程检验的数据分为叶片过程检验数据和叶丝过程检验数据。需要分别进行提取。这个过程中变量少，所以提取需要花的时间并不多。
 
@@ -190,7 +190,7 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 由于数据量大，整个数据提取过程耗费了较多时间（约几十分钟），可能是算法方面的问题。从这方面也可以看出，数据量庞大的时候一个优秀的算法的重要性。
 
-### 1.3. 检验数据并生成.matlab文件保存
+## 1.3. 检验数据并生成.matlab文件保存
 
 采用Matlab中数据和excel文档中数据抽查比对的方式确定数据提取的准确性。经过检查比对，数据无误，可以保存。
 
@@ -200,7 +200,7 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 
 
-### 1.4. 数据格式内容备注
+## 1.4. 数据格式内容备注
 
 由于MATLAB中`cell`类型的数据占内存太大，我的PC机不能处理，所以使用`table`类型的数据。因为matlab中不支持中文作为列名，所以在列名分别为：
 
@@ -220,21 +220,13 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 
 
-# 2018.4.25 把提取的数据进行预处理
-
-数据量比较多，优先提取15年7月的出软长嘴。提取的方法：
 
 
-
-首先，通过对excel文件的研究，发现如下规律：一次加料，二次加料，
-
-
-
-# 2018.4.26 预处理MATLAB代码的编写
+# 2. 对提取的数据进行预处理
 
 首先，尝试使用自己编的函数来遍历。最后发现效率太低，遂学习MATLAB自带函数，尝试使用它的函数来进行编程，同时学习table数据变量的用法。
 
-## 1. excel文件的熟悉
+## 2.1. excel文件的熟悉
 
 假设原`1 生产过程统计数据`的工单号是连续的（即中间没有断开）（事实上检测了数个工单，并没有发现太大违背假设的情况，以后如果出现例外，再进行处理），继续进行处理。
 
@@ -249,7 +241,7 @@ tableout.VarName12 = categorical(stringVectors(:,4));
 
 
 
-## 2. 数据预处理环节
+## 2.2. 数据预处理环节
 
 对各个excel表进行熟悉了之后，编写代码进行对应的数据清洗（预处理）。具体成果是`PreProcess_Beta`函数。它的执行是基于之前获得的`raw_stats.mat`的。具体的逻辑如下：
 
@@ -417,13 +409,13 @@ xy_stats = xy_stats(:, [length(variables)+1, length(variables)+2, 1:length(varia
 
 `xy_171.xlsx`
 
-![](E:\GuoChuang\DataAnalysis\data_and_files\data_and_files\生成excel文件截图.png)
+![最终生成EXCEL文件1](/media/rkterence/Study/GuoChuang/DataAnalysis/data_and_files/data_and_files/生成excel文件截图.png)
 
 由于matlab的table数据不支持中文格式的列名称，所以另附一个excel来标识各个变量的实际含义（顺序相同），部分截图如下：
 
 `variables_171.xlsx`
 
-![](E:\GuoChuang\DataAnalysis\data_and_files\data_and_files\生成excel文件截图1.png)
+![最终生成excel文件2](/media/rkterence/Study/GuoChuang/DataAnalysis/data_and_files/data_and_files/生成excel文件截图1.png)
 
 之后，就方便使用python对数据进行进一步的处理了。
 
@@ -438,4 +430,4 @@ xy_stats = xy_stats(:, [length(variables)+1, length(variables)+2, 1:length(varia
 
 # 下周计划
 
-由于下周考试周即将来临，所以下周的暂时不定计划。可能会有项目的执行，具体参考下周的周报。
+本周末考试周已经来临，考虑到下周可能需要较多的时间进行复习备考，所以下周可能没有过多的时间来实行项目，因此暂时不定计划，希望老师批准。可能会有项目的执行，具体请参考下周的周报。

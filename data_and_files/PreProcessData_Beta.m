@@ -37,11 +37,11 @@ rows = [find(po_array=='X');
         find(po_array=='Y')];
 T(rows,:) = [];%删除操作
 
-number_of_orders = length(unique(T.Workorder));%计算总共有几个工单，然后初始化xy_stats。
+number_of_orders = length(unique(T.Productionorder));%计算总共有几个工单，然后初始化xy_stats。
 
 %% 初始化table：xy_stats。初始值都为NaN。
-vector = zeros(number_of_orders/4,1);
-for i = 1:number_of_orders/4
+vector = zeros(number_of_orders,1);
+for i = 1:number_of_orders
     vector(i) = NaN;
 end
 expression = "vector,";
@@ -135,6 +135,7 @@ for i = 1:height(T)-3
         xy_stats.Brokenleaf(row) = value;
         
         row = row + 1;
+        i = i + 3;
     end
 end
         

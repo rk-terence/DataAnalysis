@@ -2,3 +2,4 @@
 /venv/
 /data_and_files/data_and_files/
 /data_and_files/*.mat
+/data_and_files/*.csv
