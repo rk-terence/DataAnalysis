@@ -1,10 +1,10 @@
 function sheetname = GenSheetname(i, file)
     if i <= 6
-        sheetname = "15Äê" + string(i + 6) + "ÔÂ";            
+        sheetname = "15ï¿½ï¿½" + string(i + 6) + "ï¿½ï¿½";            
     else
         if i <= 18
-            sheetname = "16Äê" + string(i - 6) + "ÔÂ";
+            sheetname = "16ï¿½ï¿½" + string(i - 6) + "ï¿½ï¿½";
         else
-            sheetname = "17Äê" + string(i - 18) + "ÔÂ";
+            sheetname = "17ï¿½ï¿½" + string(i - 18) + "ï¿½ï¿½";
         end
     end

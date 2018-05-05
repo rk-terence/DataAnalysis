@@ -16,7 +16,7 @@ for i = 1:24
     eval('raw_' + varname + ' = ' + 'importfilefromexcel(filename, sheetname, 2, endrow);');
 end
 
-% ¸ü¸ÄÁÐÃû³Æ
+% ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 for i = 1:24
     if i <= 6
         varname = "15" + string(i + 6);            
