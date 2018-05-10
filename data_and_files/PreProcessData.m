@@ -15,6 +15,6 @@ for i = 1:24
             month = i - 18;
         end
     end
-    eval("[xy_stats"+varname+",variables"+varname+"]=PreProcessData_Beta(month,year,raw_"+varname+");");
+    eval("[xy_stats"+varname+",variables"+varname+"]=PreProcessData_Beta_UTF8(month,year,raw_"+varname+");");
     eval("clearvars raw_"+varname);
 end

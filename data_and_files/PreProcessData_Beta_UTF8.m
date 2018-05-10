@@ -4,8 +4,14 @@ function [xy_stats, variables] = PreProcessData_Beta_UTF8(month, year, raw_data)
 %
 %输入参数：两个数字，一个raw_data。其中，年份是两位数字，如17，raw_data如raw_171。
 %建议使用本函数之前clear一下变量空间，防止干扰，产生意想不到的结果
+%
 %1.2更新：使用logical indexing，提高运行速度。更新了逻辑。
+%
 %版本：1.2
+%
+%Remaining problems: If a production order is matched with more than 4
+%workorders, data extracted may not be precise. However, this case is rare,
+%so it will not be solved at once.
 
 %% 读取需要使用的数据（从文件中）
 load raw_stats.mat relationship raw_fillsi raw_longsi raw_midsi raw_shortsi raw_brokensi raw_completesi raw_bigleaf raw_bmleaf raw_midleaf raw_brokenleaf; 
@@ -71,7 +77,7 @@ row = 1;
 for i = 1:height(T)-3
     productionorder = T.Productionorder(i);
     %如果满足一个批次号对应4个工单，继续寻找。
-    if T.Productionorder(i) == T.Productionorder(i+1) && T.Productionorder(i) == T.Productionorder(i+2) && T.Productionorder(i) == T.Productionorder(i+3) && T.Productionorder(i) ~= T.Productionorder(i+4)
+    if T.Productionorder(i) == T.Productionorder(i+1) && T.Productionorder(i) == T.Productionorder(i+2) && T.Productionorder(i) == T.Productionorder(i+3)
         workorder = {categorical(T.Workorder(i))
             categorical(T.Workorder(i+1))
             categorical(T.Workorder(i+2))
