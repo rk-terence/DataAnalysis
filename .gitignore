@@ -3,3 +3,5 @@
 /data_and_files/data_and_files/
 /data_and_files/*.mat
 /data_and_files/*.csv
+data_and_files/xy_csv/
+*.zip
