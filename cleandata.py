@@ -2,6 +2,12 @@
 # Author: Terence
 # Date: 2018.5.13
 
+'''
+本程序可以将一个包含NaN值的ndarray类型数据进行数据清洗，处理掉其中的NaN值。具体的方法时删除数据条目（或属性，针对NaN较多的行或者列）、用平均值替代（针对NaN值较少的条目）。
+Parameters:	ndarray
+return:		ndarray
+'''
+
 import numpy as np
 
 

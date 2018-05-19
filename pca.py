@@ -19,7 +19,7 @@ def pca(x):
 
     k = 50  # 降维到100维
     x_proj = projectdata(x_norm, u, k)
-    print('投影之后Z向量的大小：%d %d' % x_proj.shape)
+    print('投影之后x_proj的大小：%d %d' % x_proj.shape)
 
     # X_rec = recoverData(Z, U, K)  # 恢复数据
 
