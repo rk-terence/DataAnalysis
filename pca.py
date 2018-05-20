@@ -4,7 +4,6 @@
 
 import numpy as np
 import cleandata as cd
-# import pandas as pd
 
 
 def pca(x):
@@ -17,7 +16,7 @@ def pca(x):
 
     u, s, v = np.linalg.svd(covariance_matrix)  # 特征值分解
 
-    k = 50  # 降维到100维
+    k = 2  # 降维到2维
     x_proj = projectdata(x_norm, u, k)
     print('投影之后x_proj的大小：%d %d' % x_proj.shape)
 

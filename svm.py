@@ -4,22 +4,73 @@
 '''
 本程序可以进行SVM建模
 parameters:	x   ndarray, each row indicates a sample, and each col indicates the related properties.
-			y	ndarray 
+            y   ndarray
+
+存在的bug：
+    1. 同cleandata，使用的label是清洗之后的label。更希望使用的label是原始的label。但是，目前来看并不严重。
 '''
+
+
 import numpy as np
-from scipy import io as spio
-from matplotlib import pyplot as plt
 from sklearn import svm
+from matplotlib import pyplot as plt
+# 自己的module
+import cleandata
+import pca
 
 
-def simplifylabel(labels):
-	new_label = labels[:, 1]
-	new_label = new_label > np.mean(new_label)
-	new_label = new_label.astype(np.int64)
+def simplify_label(labels):
+    new_label = labels[:, 1]
+    new_label = new_label > np.mean(new_label)
+    new_label = new_label.astype(np.int64)
+    return new_label
 
-	return new_label
+
+def mysvm(samples, labels):
+    model = svm.SVC(gamma=100).fit(samples, labels)
+    return model
 
 
-def svm(samples, labels)
-	labels = simplifylabel(labels)
-	model = svm.SVC(gamma=100).fit(samples, labels)
+def plot_data(x,y):
+    plt.figure(figsize=(10,8))
+    pos = np.where(y==1)    # 找到y=1的位置
+    neg = np.where(y==0)    # 找到y=0的位置
+    p1, = plt.plot(np.ravel(x[pos,0]),np.ravel(x[pos,1]),'ro',markersize=8)
+    p2, = plt.plot(np.ravel(x[neg,0]),np.ravel(x[neg,1]),'g^',markersize=8)
+    plt.xlabel("variable1")
+    plt.ylabel("variable2")
+    plt.legend([p1,p2],["y==1","y==0"])
+    plt.show()
+    return plt
+
+
+# 画出SVM处理结果
+def plot_decisionboundary(x, y, model):
+    plt = plot_data(x, y)
+
+    x_1 = np.transpose(np.linspace(np.min(x[:,0]),np.max(x[:,0]),).reshape(1,-1))
+    x_2 = np.transpose(np.linspace(np.min(x[:,1]),np.max(x[:,1]),100).reshape(1,-1))
+    x1,x2 = np.meshgrid(x_1,x_2)
+    vals = np.zeros(x1.shape)
+    for i in range(x1.shape[1]):
+        this_x = np.hstack((x1[:,i].reshape(-1,1),x2[:,i].reshape(-1,1)))
+        vals[:,i] = model.predict(this_x)
+
+    plt.contour(x1,x2,vals,[0,1],color='blue')
+    plt.show()
+
+
+if __name__ == '__main__':
+    # Data training session
+    filename = './data_and_files/xy_csv/xy_stats172.csv'
+    data_raw = np.loadtxt(open(filename,"rb"),delimiter=",",skiprows=0)
+    data, cols = cleandata.cleandata(data_raw)
+    samples = data[:, 1:-11]
+    labels = data[:, -10:-1]
+    labels = simplify_label(labels)  # 使用叶丝填充值简化label
+    samples_projected = pca.pca(samples)
+    # 对数据进行svm处理，得到svm模型，同时画出边界图像
+    svm_model = mysvm(samples_projected, labels)
+    plot_decisionboundary(samples, labels, svm_model)
+
+
