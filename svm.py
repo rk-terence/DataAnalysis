@@ -13,10 +13,15 @@ parameters:	x   ndarray, each row indicates a sample, and each col indicates the
 
 import numpy as np
 from sklearn import svm
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 from matplotlib import pyplot as plt
 # 自己的module
 import cleandata
-import pca
+# import pca
 
 
 def simplify_label(labels):
@@ -68,9 +73,17 @@ if __name__ == '__main__':
     samples = data[:, 1:-11]
     labels = data[:, -10:-1]
     labels = simplify_label(labels)  # 使用叶丝填充值简化label
-    samples_projected = pca.pca(samples)
+    # Use PCA to reduce the dimension
+    X_train, X_test, y_train, y_test = train_test_split(samples, labels, test_size=0.3)
+    pca = PCA(n_components=50).fit(X_train)
+    X_train_pca = pca.transform(X_train)
+    X_test_pca = pca.transform(X_test)
     # 对数据进行svm处理，得到svm模型，同时画出边界图像
-    svm_model = mysvm(samples_projected, labels)
-    plot_decisionboundary(samples, labels, svm_model)
-
+    param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
+                  'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1], }
+    clf = GridSearchCV(svm.SVC(kernel='rbf', class_weight='balanced'), param_grid)
+    svm_model = mysvm(X_train_pca, y_train)
+    y_pred = svm_model.predict(X_test_pca)
+    print(classification_report(y_test, y_pred))
+    print(confusion_matrix(y_test, y_pred, labels=range(1)))
 
