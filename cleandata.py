@@ -67,7 +67,7 @@ def cleandata(data):
         clean_data[indices[0][i], indices[1][i]] = np.sum(clean_data[:, indices[1][i]])/height
 
     print("Successfully implemented datacleaning!")
-    return clean_data, cols
+    return clean_data, rows, cols
 
 
 '''以下代码为测试函数的时候使用，直接运行此模块'''
@@ -76,4 +76,4 @@ if __name__ == "__main__":
     data_raw = np.loadtxt(open(filename,"rb"),delimiter=",",skiprows=0)
 
     x = data_raw[:,1:-11]
-    x, cols = cleandata(x)
+    x, rows, cols = cleandata(x)
