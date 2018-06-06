@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 import cleandata
 from sklearn.decomposition import PCA
 # from sklearn.model_selection import learning_curve
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 # #############################################################################
@@ -35,4 +35,10 @@ svr = GridSearchCV(SVR(kernel='rbf', gamma=0.1), cv=5,
 svr.fit(X_train, y_train)
 y_pred = svr.predict(X_test)
 
-
+plt.plot(range(y_pred.shape[0]), y_pred, c='r',)
+plt.plot(range(y_pred.shape[0]), y_test, c='g')
+plt.xlabel('data')
+plt.ylabel('fillsi')
+plt.title('SVR')
+plt.savefig('1702fillsiResult.png')
+plt.show()

@@ -14,7 +14,6 @@ return:		ndarray
 
 import numpy as np
 
-
 # 因为主要是Nan值，所以只需对NaN进行处理即可。
 def cleandata(data):
     # 根据是否为NaN值，将array转化为逻辑array
