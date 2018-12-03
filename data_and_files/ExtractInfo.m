@@ -1,4 +1,4 @@
-ï»¿%% æå–ç”Ÿäº§è¿‡ç¨‹çš„æ•°æ®
+%% ÌáÈ¡Éú²ú¹ı³ÌµÄÊı¾İ
 filename = "StatisticsInProduction.xlsx";
 for i = 1:24
     sheetname = GenSheetname(i);
@@ -16,7 +16,7 @@ for i = 1:24
     eval('raw_' + varname + ' = ' + 'importfilefromexcel(filename, sheetname, 2, endrow);');
 end
 
-% æ›´æ”¹åˆ—åç§°
+% ¸ü¸ÄÁĞÃû³Æ
 for i = 1:24
     if i <= 6
         varname = "15" + string(i + 6);            
@@ -30,60 +30,60 @@ for i = 1:24
     eval('raw_' + varname + ".Properties.VariableNames = {'Number', 'Workorder', 'Date', 'Max', 'Min', 'Average', 'SD', 'CPK', 'Confidence', 'Varname', 'Segment', 'Category'};");
 end 
 
-%% æå–åˆ¶å¶æ®µçš„æµ‹è¯•ç»“æœ
+%% ÌáÈ¡ÖÆÒ¶¶ÎµÄ²âÊÔ½á¹û
 filename = "LeafTest.xlsx";
 
-xls = xlsread(filename,"å¤§ç‰‡ç‡");
+xls = xlsread(filename,"´óÆ¬ÂÊ");
 endrow = length(xls) + 2;
-raw_bigleaf = importfilefromexcel2(filename, "å¤§ç‰‡ç‡", 3, endrow);
+raw_bigleaf = importfilefromexcel2(filename, "´óÆ¬ÂÊ", 3, endrow);
 
-xls = xlsread(filename,"ä¸­ç‰‡ç‡");
+xls = xlsread(filename,"ÖĞÆ¬ÂÊ");
 endrow = length(xls) + 2;
-raw_midleaf = importfilefromexcel2(filename, "ä¸­ç‰‡ç‡", 3, endrow);
+raw_midleaf = importfilefromexcel2(filename, "ÖĞÆ¬ÂÊ", 3, endrow);
 
-xls = xlsread(filename,"å¤§ä¸­ç‰‡ç‡");
+xls = xlsread(filename,"´óÖĞÆ¬ÂÊ");
 endrow = length(xls) + 2;
-raw_bmleaf = importfilefromexcel2(filename, "å¤§ä¸­ç‰‡ç‡", 3, endrow);
+raw_bmleaf = importfilefromexcel2(filename, "´óÖĞÆ¬ÂÊ", 3, endrow);
 
-xls = xlsread(filename,"ç¢ç‰‡ç‡");
+xls = xlsread(filename,"ËéÆ¬ÂÊ");
 endrow = length(xls) + 2;
-raw_brokenleaf = importfilefromexcel2(filename, "ç¢ç‰‡ç‡", 3, endrow);
+raw_brokenleaf = importfilefromexcel2(filename, "ËéÆ¬ÂÊ", 3, endrow);
 
-%æ›´æ”¹åˆ—åç§°
+%¸ü¸ÄÁĞÃû³Æ
 raw_bigleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 raw_bmleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 raw_midleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 raw_brokenleaf.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 
-%% æå–åˆ¶ä¸æ®µçš„æµ‹è¯•ç»“æœ
+%% ÌáÈ¡ÖÆË¿¶ÎµÄ²âÊÔ½á¹û
 filename = "CuttobaccoTest.xlsx";
 
-xls = xlsread(filename, "é•¿ä¸ç‡");
+xls = xlsread(filename, "³¤Ë¿ÂÊ");
 endrow = length(xls) + 2;
-raw_longsi = importfilefromexcel3(filename, "é•¿ä¸ç‡", 3, endrow);
+raw_longsi = importfilefromexcel3(filename, "³¤Ë¿ÂÊ", 3, endrow);
 
-xls = xlsread(filename, "çŸ­ä¸ç‡");
+xls = xlsread(filename, "¶ÌË¿ÂÊ");
 endrow = length(xls) + 2;
-raw_shortsi = importfilefromexcel3(filename, "çŸ­ä¸ç‡", 3, endrow);
+raw_shortsi = importfilefromexcel3(filename, "¶ÌË¿ÂÊ", 3, endrow);
 
-xls = xlsread(filename, "ä¸­ä¸ç‡");
+xls = xlsread(filename, "ÖĞË¿ÂÊ");
 endrow = length(xls) + 2;
-raw_midsi = importfilefromexcel3(filename, "ä¸­ä¸ç‡", 3, endrow);
+raw_midsi = importfilefromexcel3(filename, "ÖĞË¿ÂÊ", 3, endrow);
 
-xls = xlsread(filename, "æ•´ä¸ç‡");
+xls = xlsread(filename, "ÕûË¿ÂÊ");
 endrow = length(xls) + 2;
-raw_completesi = importfilefromexcel3(filename, "æ•´ä¸ç‡", 3, endrow);
+raw_completesi = importfilefromexcel3(filename, "ÕûË¿ÂÊ", 3, endrow);
 
-xls = xlsread(filename, "ç¢ä¸ç‡");
+xls = xlsread(filename, "ËéË¿ÂÊ");
 endrow = length(xls) + 2;
-raw_brokensi = importfilefromexcel3(filename, "ç¢ä¸ç‡", 3, endrow);
+raw_brokensi = importfilefromexcel3(filename, "ËéË¿ÂÊ", 3, endrow);
 
-xls = xlsread(filename, "å¡«å……å€¼");
+xls = xlsread(filename, "Ìî³äÖµ");
 endrow = length(xls) + 2;
-raw_fillsi = importfilefromexcel3(filename, "å¡«å……å€¼", 3, endrow);
+raw_fillsi = importfilefromexcel3(filename, "Ìî³äÖµ", 3, endrow);
 
 
-%æ›´æ”¹åˆ—åç§°
+%¸ü¸ÄÁĞÃû³Æ
 raw_fillsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 raw_longsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};
 raw_shortsi.Properties.VariableNames = {'undefined', 'Number', 'Value', 'Time', 'Workorder', 'Productionorder', 'Category'};

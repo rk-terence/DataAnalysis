@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # Data training session
     filename = './data_and_files/xy_csv/xy_stats172.csv'
     data_raw = np.loadtxt(open(filename,"rb"),delimiter=",",skiprows=0)
-    data, cols = cleandata.cleandata(data_raw)
+    data, rows, cols = cleandata.cleandata(data_raw)
     samples = data[:, 1:-11]
     labels = data[:, -10:-1]
     labels = simplify_label(labels)  # 使用叶丝填充值简化label

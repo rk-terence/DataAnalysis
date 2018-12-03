@@ -11,13 +11,12 @@ from sklearn.decomposition import PCA
 # from sklearn.model_selection import learning_curve
 import matplotlib.pyplot as plt
 
-
 # #############################################################################
 # Generate sample data
 filename = './data_and_files/xy_csv/xy_stats172.csv'
 # Delete the NaN value inside the data.
 data_raw = np.loadtxt(open(filename, "rb"),delimiter=",", skiprows=0)
-y = data_raw[:, -10]
+y = data_raw[:, -7]
 data, rows, cols = cleandata.cleandata(data_raw[:, :-11])
 X = data
 y = np.delete(y[:], rows, axis=0)

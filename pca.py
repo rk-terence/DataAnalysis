@@ -59,7 +59,7 @@ if __name__ == "__main__":
     filename = './data_and_files/xy_csv/xy_stats172.csv'
     data_raw = np.loadtxt(open(filename, "rb"), delimiter=",", skiprows=0)
     x = data_raw[:, 1:-11]
-    x_cleaned, cols = cd.cleandata(x)
+    x_cleaned, cols, rows = cd.cleandata(x)
     x_proj = pca(x_cleaned)
 
 
