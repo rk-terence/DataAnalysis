@@ -43,11 +43,7 @@ function [xy_table, vars] = getXY(monthyear, category, prod_line, output_kind)
 % added an extra column of raw_data, which gives us the info of production
 % order of that workorder. Then, the new data is saved in the name of
 % raw_stats_delta.mat. So there will only be small changes in this script
-% function, one of which is the name of file to load, and the other is some
-% logics to delete the rows that is not necessary in raw_data (judged by
-% prod_line and category).
-% Through some rough checks, there will be no cols that have actually no
-% valid elements.
+% function, one of 
 
 
 

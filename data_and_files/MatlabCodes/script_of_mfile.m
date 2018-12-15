@@ -1,8 +1,12 @@
-[XY_stats_ruan, Varnames_ruan] = PreProcessData_Charlie(2, 17, "利群（软长嘴）叶丝");
-[XY_stats_hong, Varnames_hong] = PreProcessData_Charlie(2, 17, "利群（软红长嘴）叶丝");
+% Delete other production lines in raw_data
+po_array_raw = char(raw_data.Productionorder);
+po_array_raw = po_array_raw(9, :);
+raw_data(po_array_raw ~= prod_line, :) = [];
 
-% 转化为Excel格式：
-writetable(XY_stats_hong, "软红长嘴叶丝数据（17年2月）.xlsx", 'FileType', 'spreadsheet');
-xlswrite('软红长嘴叶丝数据对应变量名.xlsx',Varnames_hong);
-writetable(XY_stats_ruan, "软长嘴叶丝数据（17年2月）.xlsx", 'FileType', 'spreadsheet');
-xlswrite('软长嘴叶丝数据对应变量名.xlsx',Varnames_ruan);
+% Delete other categories in raw_data
+if output_kind == 2
+    raw_data(logical((string(raw_data.Category) ~= category_ex(1)) .* ...
+        (string(raw_data.Category) ~= category_ex(2)))) = [];
+else
+    raw_data(string(raw_data.Category) ~= category_ex, :) = [];
+end
