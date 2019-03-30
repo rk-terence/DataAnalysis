@@ -77,6 +77,13 @@ for i=0:delta_month
     end
 end
 
+% Load the important variable names
+zhiye_vars = xlsread('../data_and_files/zhiye_variables_new.xlsx');
+zhiye_vars = string(zhiye_vars);
+zhisi_vars = xlsread('../data_and_files/zhisi_variables_new.xlsx');
+zhisi_vars = string(zhisi_vars);
+
+
 %-------------------------------------------------------------------------------
 % Get the production orders
 %-------------------------------------------------------------------------------
@@ -97,12 +104,36 @@ raw_data(po_array_raw ~= prod_line, :) = [];
 if output_kind == 2
     raw_data(logical((string(raw_data.Category) ~= category_ex(1)) .* ...
         (string(raw_data.Category) ~= category_ex(2))), :) = [];
+    % Below I use the remaining raw_data to get the variable names of each
+    % production period. In my view, this is important in the process of
+    % data.
+    
+    % part of the remaining rawdata which matches zhiye period.
+    raw_data_copy_zhiye = [raw_data(string(raw_data.Category) == ...
+        category_ex(1), :)];
+    vars_zhiye = sort(unique(raw_data_copy_zhiye.Varname)); % Vars of zhiye
+    xlswrite('zhiye_vars.xlsx', vars_zhiye);
+    % part of the remaining rawdata which matches zhisi period.
+    raw_data_copy_zhisi = [raw_data(string(raw_data.Category) == ...
+        category_ex(2), :)];
+    vars_zhisi = sort(unique(raw_data_copy_zhisi.Varname)); % Vars of zhisi
+    xlswrite('zhisi_vars.xlsx', vars_zhisi);
 else
     raw_data(string(raw_data.Category) ~= category_ex, :) = [];
 end
 % Get the name of vars in the remaining raw_data
-vars = sort(unique(raw_data.Varname));
+switch output_kind
+    case 0
+        vars = sort(vars_zhiye);
+    case 1
+        vars = sort(vars_zhisi);
+    case 2
+        vars = string([vars_zhiye; vars_zhisi]);
+end
+% The method below is legacy method, for bringing in unnecessary vars.
+% vars = sort(unique(raw_data.Varname));
 num_vars = length(vars);
+
 % get the header of the table
 [header, row_vector_default] = getHeader(output_kind, num_vars);
 

@@ -1,6 +1,3 @@
-from __future__ import division
-# import time
-
 import numpy as np
 
 from sklearn.svm import SVR
@@ -31,8 +28,8 @@ X_test_pca = pca.transform(X_test)
 svr = GridSearchCV(SVR(kernel='rbf', gamma=0.1), cv=5,
                    param_grid={"C": [1e0, 1e1, 1e2, 1e3],
                                "gamma": np.logspace(-2, 2, 5)})
-svr.fit(X_train, y_train)
-y_pred = svr.predict(X_test)
+svr.fit(X_train_pca, y_train)
+y_pred = svr.predict(X_test_pca)
 
 plt.plot(range(y_pred.shape[0]), y_pred, c='r',)
 plt.plot(range(y_pred.shape[0]), y_test, c='g')
