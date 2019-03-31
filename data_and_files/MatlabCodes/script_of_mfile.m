@@ -1,12 +1,32 @@
-% Delete other production lines in raw_data
-po_array_raw = char(raw_data.Productionorder);
-po_array_raw = po_array_raw(9, :);
-raw_data(po_array_raw ~= prod_line, :) = [];
+%% Data Extracting 
+[xy_table_average, vars] = getXY(["201507";"201706"], "Èíºì³¤×ì", 'C', 2, 0);
 
-% Delete other categories in raw_data
-if output_kind == 2
-    raw_data(logical((string(raw_data.Category) ~= category_ex(1)) .* ...
-        (string(raw_data.Category) ~= category_ex(2)))) = [];
-else
-    raw_data(string(raw_data.Category) ~= category_ex, :) = [];
+%% Delete columns that have more than 15 nans
+num_nan_col = [];
+for i = 1:width(xy_table_average(:, 1:end-13))
+    feature = xy_table_average{:, i};
+    num_nan_col = [num_nan_col; height(xy_table_average) - length(cell2mat(feature))];
 end
+num_nan_row = [];
+for i = 1:height(xy_table_average)
+    sample = xy_table_average{i, 1:end-13};
+    num_nan_row = [num_nan_row; width(xy_table_average(:, 1:end-13)) ...
+        - length(cell2mat(sample))];
+end
+vars(num_nan_col >= 15) = [];
+xy_table_average(:, num_nan_col >= 15) = [];
+
+%% Delete rows that have nans
+num_nan_row_after = [];
+for i = 1:height(xy_table_average)
+    sample = xy_table_average{i, 1:end-13};
+    num_nan_row_after = [num_nan_row_after; width(xy_table_average(:, 1:end-13)) ...
+        - length(cell2mat(sample))];
+end
+xy_table_average(num_nan_row_after > 0, :) = [];
+
+%% Output
+xy_table_average(:, [end-2, end-1, end]) = [];
+writetable(xy_table_average, '..\data_and_files\Build\RHC_C+F_zhiyezhisi_new.csv', ...
+    'WriteVariableNames', false);
+xlswrite('..\data_and_files\Build\RHC_C+F_zhiyezhisi_new_vars.xlsx', vars);

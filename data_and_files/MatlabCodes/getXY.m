@@ -1,4 +1,5 @@
-function [xy_table, vars] = getXY(monthyear, category, prod_line, output_kind)
+function [xy_table, vars] = getXY(monthyear, category, prod_line, ...
+    output_kind, value_kind)
 % @brief: get the XY table of all production orders in the specified range
 % of time.
 % @param monthyear: A 2-by-1 string array. Example: ["201701"; "201711"]
@@ -9,6 +10,7 @@ function [xy_table, vars] = getXY(monthyear, category, prod_line, output_kind)
 % @param output_kind: to choose the output kind. 0 means leaf period, 1
 % means si period and 2 means the whole period (All production variables
 % and all test variables
+% @param value_kind: 0 - average value; 1 - variance value
 % @return xy_table: XY table
 % @return vars: The name of vars in production that has the same order as
 % xy_table.
@@ -53,7 +55,7 @@ function [xy_table, vars] = getXY(monthyear, category, prod_line, output_kind)
 
 %-------------------------------------------------------------------------------
 % Load the latest preprocessed dataset:
-%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------    
 % Load the relationship data and testing data
 load ..\data_and_files\raw_stats_delta.mat ...
 relationship_charlie raw_fillsi raw_longsi raw_midsi raw_shortsi ...
@@ -78,9 +80,9 @@ for i=0:delta_month
 end
 
 % Load the important variable names
-zhiye_vars = xlsread('../data_and_files/zhiye_variables_new.xlsx');
+[~, zhiye_vars, ~] = xlsread('../data_and_files/zhiye_variables_new.xlsx');
 zhiye_vars = string(zhiye_vars);
-zhisi_vars = xlsread('../data_and_files/zhisi_variables_new.xlsx');
+[~, zhisi_vars, ~] = xlsread('../data_and_files/zhisi_variables_new.xlsx');
 zhisi_vars = string(zhisi_vars);
 
 
@@ -124,11 +126,11 @@ end
 % Get the name of vars in the remaining raw_data
 switch output_kind
     case 0
-        vars = sort(vars_zhiye);
+        vars = sort(zhiye_vars);
     case 1
-        vars = sort(vars_zhisi);
+        vars = sort(zhisi_vars);
     case 2
-        vars = string([vars_zhiye; vars_zhisi]);
+        vars = string([zhiye_vars; zhisi_vars]);
 end
 % The method below is legacy method, for bringing in unnecessary vars.
 % vars = sort(unique(raw_data.Varname));
@@ -149,13 +151,21 @@ while i <= num_prod
     end
     row_value = []; row_variable = [];
     for k = 1:length(workorders)
-        row_value = [row_value;
-            raw_data.Average(raw_data.Workorder == workorders(k))];
+        if value_kind
+            row_value = [row_value;
+                raw_data.SD(raw_data.Workorder == workorders(k))];
+        else
+            row_value = [row_value;
+                raw_data.Average(raw_data.Workorder == workorders(k))];
+        end
         row_variable = [row_variable;
             raw_data.Varname(raw_data.Workorder == workorders(k))];
     end
+    % Get the intersect of vars
+    [row_variable, ~, index_row_variable] = intersect(vars, row_variable);
+    row_value = row_value(index_row_variable);
     num_row_variable = length(row_variable);
-    row_vector = row_vector_default;
+    row_vector = row_vector_default;    
     
     % stats in production
     for j = 1:num_row_variable
